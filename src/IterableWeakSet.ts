@@ -65,7 +65,7 @@ export class IterableWeakSet<T extends Object> implements Set<T> {
 
 	private _weak = new WeakMap<T,WeakRef<T>>();
 	private readonly _refs = new Set<WeakRef<T>>();
-	private readonly _finalizer = new FinalizationRegistry<T,WeakRef<T>,T>((value)=>{
+	private readonly _finalizer = new FinalizationRegistry<WeakRef<T>>((value)=>{
 		this._refs.delete(value);
 	});
 

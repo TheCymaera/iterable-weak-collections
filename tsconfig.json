@@ -20,7 +20,7 @@
 
 		"skipDefaultLibCheck": true,
 
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"lib": ["ESNext"],
 
 		"baseUrl": ".",
 	}
