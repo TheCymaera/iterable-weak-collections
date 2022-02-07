@@ -2,6 +2,7 @@
 	"name": "iterable-weak-collections",
 	"version": "1.0.0",
 	"description": "Iterable weak maps and weak sets.",
+	"type": "module",
 	"main": "dst/index.js",
 	"files": ["dst/**"],
 	"scripts": {
