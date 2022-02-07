@@ -1,0 +1,32 @@
+{
+	"name": "iterable-weak-collections",
+	"version": "1.0.0",
+	"description": "Iterable weak maps and weak sets.",
+	"main": "dst/index.js",
+	"files": ["dst/**"],
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"build-watch": "tsc -p tsconfig.json --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TheCymaera/iterable-weak-collections.git"
+	},
+	"keywords": [
+		"iterate",
+		"iterable",
+		"enumerate",
+		"enumerable",
+		"weak",
+		"ref",
+		"map",
+		"set",
+		"collection"
+	],
+	"author": "Cymaera",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/TheCymaera/iterable-weak-collections/issues"
+	},
+	"homepage": "https://github.com/TheCymaera/iterable-weak-collections#readme"
+}

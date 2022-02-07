@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iterable Collections</title>
+</head>
+<body>
+	<div style="display: grid; grid-template-columns: 1fr 1fr;">
+		<div id="weakMapText">
+			
+		</div>
+		<div id="weakSetText">
+			
+		</div>
+	</div><br />
+	<select id="modeSelect">
+		<option value="iterate">iterate</option>
+		<option value="entries">entries</option>
+		<option value="keys">keys</option>
+		<option value="values">values</option>
+		<option value="validate">validate</option>
+	</select><br />
+	<button id="addButton">Add</button>
+	<button id="removeButton">Remove</button>
+	<button id="clearButton">Clear</button>
+	<br /><br />
+	<div>
+		Items are automatically removed after a while.<br />
+		You can force garbage collection by going to DevTools > Memory.
+	</div>
+</body>
+<style>
+#weakMapText, #weakSetText {
+	font: monospace;
+	border: 1px solid grey;
+	min-height: 400px;
+	white-space: pre;
+}
+</style>
+<script type="module">
+	import { IterableWeakMap, IterableWeakSet } from "./dst/index.js";
+	const map = new IterableWeakMap();
+	const set = new IterableWeakSet();
+	
+	console.log("For debugging, see window.map, window.set");
+	window.map = map;
+	window.set = set;
+
+	if (location.hash) modeSelect.value = location.hash.slice(1);
+	const getItems = (set)=>{
+		switch (modeSelect.value) {
+			case "iterate": return set;
+			case "entries": return set.entries();
+			case "keys": return set.keys();
+			case "values": return set.values();
+			case "validate": {
+				const out = [];
+				if (set instanceof IterableWeakSet) {
+					for (const value of set) {
+						out.push(set.has(value));
+					}
+				} else {
+					for (const [key,value] of set) {
+						out.push([set.has(key), set.get(key) === value]);
+					}
+				}
+				return out;
+			}
+		}
+	}
+
+	const updateText = () => {
+		weakMapText.textContent = "IterableWeakMap\nSize: " + map.size + "\n";
+		for (const entry of getItems(map)) {
+			weakMapText.textContent += JSON.stringify(entry) + "\n";
+		}
+
+
+		weakSetText.textContent = "IterableWeakSet\nSize: " + set.size + "\n";
+		for (const value of getItems(set)) {
+			weakSetText.textContent += JSON.stringify(value) + "\n";
+		}
+	}
+	updateText();
+	setInterval(updateText, 50);
+
+	let inc = 0;
+	function generateId() {
+		return (inc++).toString();
+	}
+
+	function randomId() {
+		const choices = [...set];
+		return choices[Math.floor(Math.random() * choices.length)]?.id || "";
+	}
+
+	function addItem(id) {
+		const item = {id};
+		map.set(item, id);
+		map.set(item, id);
+		set.add(item);
+		set.add(item);
+		updateText();
+	}
+
+	function getById(id) {
+		for (const item of set.keys()) {
+			if (item.id === id) return item;
+		}
+	}
+
+	window.getById = getById;
+
+	function removeItem(id) {
+		const item = getById(id);
+		set.delete(item);
+		map.delete(item);
+		updateText();
+	}
+
+	function clearItems() {
+		map.clear();
+		set.clear();
+		updateText();
+	}
+
+	addButton.onclick = ()=>addItem(generateId());
+	removeButton.onclick = ()=>removeItem(randomId());
+	clearButton.onclick = ()=>clearItems();
+</script>
+</html>
